@@ -21,6 +21,8 @@ export async function POST(req: Request) {
             return NextResponse.json({user: null, message: 'User already exits'}, {status: 409})
         }
 
+        console.log('body', body);
+        
         const createUser = await prisma.user.create({
             data: {
                 email: email,
