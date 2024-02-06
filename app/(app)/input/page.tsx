@@ -18,6 +18,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { useEffect, useState } from "react"
+import withAuth from "@/components/withAuth"
+
 const formSchema = z.object({
   machines: z
     .string()
@@ -189,4 +191,4 @@ const InputPage = () => {
   )
 }
 
-export default InputPage
+export default withAuth(InputPage)

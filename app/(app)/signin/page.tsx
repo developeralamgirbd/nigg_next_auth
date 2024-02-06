@@ -5,16 +5,21 @@ import {Simulate} from "react-dom/test-utils";
 import submit = Simulate.submit;
 import {useRouter} from "next/navigation";
 import Link from 'next/link';
+import { useToast } from "@/components/ui/use-toast"
+
 
 const SignIn = () => {
-    // const { data: session } = useSession();
     const router = useRouter();
+    const { toast } = useToast()
 
-/*    useEffect(() => {
-        if (session) {
+    const { data: session, status } = useSession();
+
+
+   useEffect(() => {
+        if (session && status === 'authenticated') {
             router.replace('/');
         }
-    }, [session, router]);*/
+    }, [session, router]);
 
 
 
@@ -49,16 +54,35 @@ const SignIn = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-       /* console.log(formData)
-*/
-        await signIn('credentials', formData).then(res => {
-            console.log(res)
-             // @ts-ignore
-        }).catch((error) => {
-            console.log(error)
-        });
+       const response = await signIn('credentials', {
+            email: formData?.email,
+            password: formData?.password,
+            redirect: false
+            })
+            
+            if(response?.ok){
+               
+                router.refresh();
+                router.push('/');
+               
+            }else{
+                // console.log('error', error);
+            
+                toast({
+                    title: "Error",
+                    description: "Ops, something went wrong!",
+                    variant: "destructive"
+                  })
+        
+            }
+            
+        
+       
     };
-
+    if (status === 'loading') {
+        return <p>Loading...</p>;
+      }
+  
 
 
     return (
@@ -81,18 +105,21 @@ const SignIn = () => {
                             </div>
                             <div className="flex items-center justify-between">
                                 <div className="flex items-start">
-                                    {/*<div className="flex items-center h-5">
-                                        <input id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required />
-                                    </div>*/}
+                                
                                     <div className="ml-3 text-sm">
                                         <label htmlFor="remember" className="text-gray-500 dark:text-gray-300"></label>
                                     </div>
                                 </div>
-                                <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>
+                                {/* <Link href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</Link> */}
                             </div>
-                            <button type="submit" className="w-full text-white bg-green-400 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
+                            <button type="submit" className={`w-full text-white 
+                            ${
+                                formData?.email?.length == 0 
+                                || formData?.password?.length === 0
+                                ? "bg-green-200" : "bg-green-400 " 
+                            } hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}>Sign in</button>
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                                Don’t have an account yet? <Link href="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</Link>
+                                Don't have an account yet? <Link href="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</Link>
                             </p>
                         </form>
                     </div>
