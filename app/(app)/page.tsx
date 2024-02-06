@@ -11,8 +11,9 @@ import { v4 } from "uuid"
 import { Combobox } from "@/components/combobox"
 import { Message } from "@/components/message"
 import { WelcomeMessage } from "@/components/welcome-message"
+import withAuth from "@/components/withAuth"
 
-export default function Home() {
+const Home = () => {
   const [successText, setSuccessText] = useState<string>("")
   const [errorText, setErrorText] = useState<string>("")
   const [conversationId, setConversationId] = useState(v4())
@@ -86,6 +87,9 @@ export default function Home() {
     setSourceValue(value);
   }
 
+//  const session = getServerSession(authOptions);
+
+//  console.log('session', session);
   return (
     <div className="mx-auto w-full p-2 px-6 text-neutral-50 sm:max-w-[800px] sm:py-6 md:px-0">
       <div className="mb-20 flex w-full flex-1 flex-col">
@@ -193,3 +197,6 @@ export default function Home() {
     </div>
   )
 }
+
+
+export default withAuth(Home)

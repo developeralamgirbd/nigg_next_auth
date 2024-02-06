@@ -4,10 +4,10 @@ import '@radix-ui/themes/styles.css';
 import { siteConfig } from "@/config/site"
 import { fontSans } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
-import { SiteHeader } from "@/components/site-header"
+import { Toaster } from "@/components/ui/toaster"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
-import { Theme } from '@radix-ui/themes';
+import Provider from "@/components/Provider";
 
 export const metadata: Metadata = {
     title: {
@@ -42,17 +42,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     )}
                 >
                     <ThemeProvider attribute="class" defaultTheme="light">
-                        <div className="relative flex min-h-screen flex-col">
-                            <div className="flex-1">
-                                <Theme>
-                                {children}
-                                
-                                </Theme>
-                               
-                                </div>
-                        </div>
+                        <Provider>
+                            <div className="relative flex min-h-screen flex-col">
+                                <div className="flex-1">{children}</div>
+                            </div>
+                        </Provider>
                         <TailwindIndicator />
                     </ThemeProvider>
+                    <Toaster />
                 </body>
             </html>
         </>

@@ -5,6 +5,13 @@ export const siteConfig = {
   description:
     "Chatbot for technical documentation. Powered by GPT-4 and Data Science Engineer.",
   mainNav: [
+ 
+    {
+      title: "Sign In",
+      href: "/signin",
+    },
+  ],
+  authMainNav: [
     {
       title: "Home",
       href: "/",
@@ -12,12 +19,9 @@ export const siteConfig = {
     {
       title: "Input",
       href: "/input",
-    },
-    {
-      title: "Sign In",
-      href: "/signin",
-    },
+    }
   ],
+  
   links: {
     linkedin: "https://www.linkedin.com/in/andreasniggdatascientist",
     twitter: "https://twitter.com/techscienceandy",
